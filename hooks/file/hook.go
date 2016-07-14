@@ -89,7 +89,7 @@ func getMessage(entry *logrus.Entry) (message string, err error) {
 	message = message + fmt.Sprintf("%s\n", entry.Message)
 	for k, v := range entry.Data {
 		if !strings.HasPrefix(k, "err_") {
-			message = message + fmt.Sprintf("%v:%v\n", k, v)
+			message = message + fmt.Sprintf("%v:%v", k, v)
 		}
 	}
 	if errCode, exist := entry.Data["err_code"]; exist {
@@ -109,14 +109,14 @@ func getMessage(entry *logrus.Entry) (message string, err error) {
 		message = message + fmt.Sprintf("%v", buf.String())
 	} else {
 		file, lineNumber := caller.GetCallerIgnoringLogMulti(2)
-		if file != "" {
-			sep := fmt.Sprintf("%s/src/", os.Getenv("GOPATH"))
-			fileName := strings.Split(file, sep)
-			if len(fileName) >= 2 {
-				file = fileName[1]
-			}
-		}
-		message = message + fmt.Sprintf("%s:%d", file, lineNumber)
+		// if file != "" {
+		// 	sep := fmt.Sprintf("%s/src/", os.Getenv("GOPATH"))
+		// 	fileName := strings.Split(file, sep)
+		// 	if len(fileName) >= 2 {
+		// 		file = fileName[1]
+		// 	}
+		// }
+		message = fmt.Sprintf("%s:%d", file, lineNumber) + message
 	}
 
 	return
