@@ -36,7 +36,7 @@ func NewFileHook(options logrus_mate.Options) (hook logrus.Hook, err error) {
 		return
 	}
 
-	w.SetPrefix("[-] ")
+	// w.SetPrefix("[-] ")
 
 	hook = &FileHook{W: w}
 
@@ -86,7 +86,7 @@ func (p *FileHook) Levels() []logrus.Level {
 }
 
 func getMessage(entry *logrus.Entry) (message string, err error) {
-	message = message + fmt.Sprintf("%s\n", entry.Message)
+	message = message + fmt.Sprintf("%s", entry.Message)
 	for k, v := range entry.Data {
 		if !strings.HasPrefix(k, "err_") {
 			message = message + fmt.Sprintf("%v:%v", k, v)
@@ -109,14 +109,16 @@ func getMessage(entry *logrus.Entry) (message string, err error) {
 		message = message + fmt.Sprintf("%v", buf.String())
 	} else {
 		file, lineNumber := caller.GetCallerIgnoringLogMulti(2)
-		// if file != "" {
-		// 	sep := fmt.Sprintf("%s/src/", os.Getenv("GOPATH"))
-		// 	fileName := strings.Split(file, sep)
-		// 	if len(fileName) >= 2 {
-		// 		file = fileName[1]
-		// 	}
-		// }
-		message = fmt.Sprintf("%s:%d", file, lineNumber) + message
+		if file != "" {
+			// sep := fmt.Sprintf("%s/src/", os.Getenv("GOPATH"))
+			// fileName := strings.Split(file, sep)
+			fileName := strings.Split(file, "/")
+			if len(fileName) >= 2 {
+				// file = fileName[1]
+				file = fileName[len(fileName)-1] //只取文件名，不要目录路径
+			}
+		}
+		message = fmt.Sprintf("[%s:%d] ", file, lineNumber) + message
 	}
 
 	return
