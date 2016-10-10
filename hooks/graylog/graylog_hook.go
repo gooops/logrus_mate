@@ -2,15 +2,15 @@ package graylog
 
 import (
 	"github.com/Sirupsen/logrus"
-	"gopkg.in/gemnasium/logrus-graylog-hook.v1"
+	"github.com/gogap/logrus_mate/hooks/graylog"
 
 	"github.com/gooops/logrus_mate"
 )
 
 type GraylogHookConfig struct {
-	Address  string                 `json:"address"`
-	Facility string                 `json:"facility"`
-	Extra    map[string]interface{} `json:"extra"`
+	Address  string                 `json:"address" yaml:"address"`
+	Facility string                 `json:"facility" yaml:"facility"`
+	Extra    map[string]interface{} `json:"extra" yaml:"extra"`
 }
 
 func init() {

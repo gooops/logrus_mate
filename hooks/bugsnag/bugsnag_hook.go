@@ -9,10 +9,10 @@ import (
 )
 
 type BugsnagHookConfig struct {
-	Endpoint     string `json:"endpoint"`
-	ReleaseStage string `json:"release_stage"`
-	APIKey       string `json:"api_key"`
-	Synchronous  bool   `json:"synchronous"`
+	Endpoint     string `json:"endpoint" yaml:"endpoint"`
+	ReleaseStage string `json:"release_stage" yaml:"release_stage"`
+	APIKey       string `json:"api_key" yaml:"api_key"`
+	Synchronous  bool   `json:"synchronous" yaml:"synchronous"`
 }
 
 func init() {

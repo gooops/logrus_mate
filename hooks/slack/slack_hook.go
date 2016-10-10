@@ -8,11 +8,11 @@ import (
 )
 
 type SlackHookConfig struct {
-	URL      string   `json:"url"`
-	Levels   []string `json:"levels"`
-	Channel  string   `json:"channel"`
-	Emoji    string   `json:"emoji"`
-	Username string   `json:"username"`
+	URL      string   `json:"url" yaml:"url"`
+	Levels   []string `json:"levels" yaml:"levels"`
+	Channel  string   `json:"channel" yaml:"channel"`
+	Emoji    string   `json:"emoji" yaml:"emoji"`
+	Username string   `json:"username" yaml:"username"`
 }
 
 func init() {

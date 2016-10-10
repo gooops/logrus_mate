@@ -10,10 +10,10 @@ import (
 )
 
 type SyslogHookConfig struct {
-	Network  string `json:"network"`
-	Address  string `json:"address"`
-	Priority string `json:"priority"`
-	Tag      string `json:"tag"`
+	Network  string `json:"network" yaml:"network"`
+	Address  string `json:"address" yaml:"address"`
+	Priority string `json:"priority" yaml:"priority"`
+	Tag      string `json:"tag" yaml:"tag"`
 }
 
 func init() {

@@ -145,6 +145,56 @@ loggers:
           tag: ''
 ```
 
+```
+file模式完整配置
+---
+env_keys:
+  run_env: RUN_MODE
+loggers:
+- name: mike
+  config:
+    production:
+      out:
+        name: stdout
+        options: {}
+      level: debug
+      formatter:
+        name: text
+        options:
+          force_colors: true
+          disable_colors: false
+          disable_timestamp: false
+          full_timestamp: true
+          timestamp_format: '2006-01-02 15:04:05'
+          disable_sorting: true
+      hooks:
+      - name: file
+        options:
+          filename: "/tmp/test.log"
+        #   maxlines: 1000
+        #   maxsize: 10240
+          daily: true
+          maxdays: 1
+          rotate: true
+          level: 3
+    development:
+      out:
+        name: stdout
+        options: {}
+      level: debug
+      formatter:
+        name: text
+        options:
+          force_colors: true
+          disable_colors: false
+          disable_timestamp: false
+          full_timestamp: true
+          timestamp_format: '2006-01-02 15:04:05'
+          disable_sorting: false
+
+```
+
+
 ```go
 package main
 
@@ -180,7 +230,7 @@ different environment could have own `level`, `hooks` and `formatters`, logrus m
 
 ```go
 type Environments struct {
-    RunEnv  string `json:"run_env"`
+    RunEnv string `json:"run_env" yaml:"run_env"`
 }
 ```
 
@@ -215,7 +265,7 @@ import (
 )
 
 type MyHookConfig struct {
-    Address  string `json:"address"`
+    Address  string `json:"address" yaml:"address"`
 }
 
 func init() {
@@ -267,7 +317,7 @@ import (
 )
 
 type MyFormatterConfig struct {
-    Address  string `json:"address"`
+    Address  string `json:"address" yaml:"address"`
 }
 
 func init() {
@@ -318,7 +368,7 @@ import (
 )
 
 type MyWriterConfig struct {
-    Address  string `json:"address"`
+    Address  string `json:"address" yaml:"address"`
 }
 
 func init() {

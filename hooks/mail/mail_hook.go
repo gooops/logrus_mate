@@ -8,13 +8,13 @@ import (
 )
 
 type MailHookConfig struct {
-	AppName  string `json:"app_name"`
-	Host     string `json:"host"`
-	Port     int    `json:"port"`
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	AppName  string `json:"app_name" yaml:"app_name"`
+	Host     string `json:"host" yaml:"host"`
+	Port     int    `json:"port" yaml:"port"`
+	From     string `json:"from" yaml:"from"`
+	To       string `json:"to" yaml:"to"`
+	Username string `json:"username" yaml:"username"`
+	Password string `json:"password" yaml:"password"`
 }
 
 func init() {

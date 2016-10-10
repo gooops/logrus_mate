@@ -8,9 +8,9 @@ import (
 )
 
 type AirbrakeHookConfig struct {
-	ProjectId int    `json:"project_id"`
-	APIKey    string `json:"api_key"`
-	Env       string `json:"env"`
+	ProjectId int    `json:"project_id" yaml:"project_id"`
+	APIKey    string `json:"api_key" yaml:"api_key"`
+	Env       string `json:"env" yaml:"env"`
 }
 
 func init() {
