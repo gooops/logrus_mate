@@ -52,6 +52,35 @@ func main() {
 }
 ```
 
+```
+package log
+
+import (
+	"os"
+
+	"github.com/Sirupsen/logrus"
+	"github.com/gooops/logrus_mate"
+
+	_ "github.com/gooops/logrus_mate/hooks/file"
+)
+
+func New(configfile string) (*logrus.Logger, error) {
+	if _, err := os.Stat(configfile); err != nil {
+		return nil, err
+	}
+	if mateConf, err := logrus_mate.LoadLogrusMateConfig(configfile); err != nil {
+		return nil, err
+	} else {
+		if newMate, err := logrus_mate.NewLogrusMate(mateConf); err != nil {
+			return nil, err
+		} else {
+			return newMate.Logger("mike"), nil
+		}
+	}
+}
+
+```
+
 **Example 3:**
 
 Create logurs mate from config file (also you could fill config struct manually):
@@ -91,6 +120,29 @@ export RUN_MODE=production
         }
     }]
 }
+```
+`mate.yml`
+```yaml
+---
+env_keys:
+  run_env: RUN_MODE
+loggers:
+- name: mike
+  config:
+    production:
+      out:
+        name: stderr
+        options: {}
+      level: error
+      formatter:
+        name: json
+      hooks:
+      - name: syslog
+        options:
+          network: udp
+          address: localhost:514
+          priority: LOG_ERR
+          tag: ''
 ```
 
 ```go
