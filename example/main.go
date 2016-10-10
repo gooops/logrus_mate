@@ -6,14 +6,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/gogap/logrus_mate"
+	"github.com/gooops/logrus_mate"
 
-	_ "github.com/gogap/logrus_mate/hooks/bugsnag"
-	_ "github.com/gogap/logrus_mate/hooks/mail"
-	_ "github.com/gogap/logrus_mate/hooks/slack"
-	_ "github.com/gogap/logrus_mate/hooks/syslog"
+	_ "github.com/gooops/logrus_mate/hooks/bugsnag"
+	_ "github.com/gooops/logrus_mate/hooks/mail"
+	_ "github.com/gooops/logrus_mate/hooks/slack"
+	_ "github.com/gooops/logrus_mate/hooks/syslog"
 
-	_ "github.com/gogap/logrus_mate/writers/redisio"
+	_ "github.com/gooops/logrus_mate/writers/redisio"
 )
 
 func main() {

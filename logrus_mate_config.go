@@ -5,49 +5,57 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/gogap/env_json"
+	"gopkg.in/yaml.v2"
 )
 
 type Environments struct {
-	RunEnv string `json:"run_env"`
+	RunEnv string `json:"run_env" yaml:"run_env"`
 }
 
 type FormatterConfig struct {
-	Name    string  `json:"name"`
-	Options Options `json:"options"`
+	Name    string  `json:"name" yaml:"name"`
+	Options Options `json:"options" yaml:"options"`
 }
 
 type HookConfig struct {
-	Name    string  `json:"name"`
-	Options Options `json:"options"`
+	Name    string  `json:"name" yaml:"name"`
+	Options Options `json:"options" yaml:"options"`
 }
 
 type WriterConfig struct {
-	Name    string  `json:"name"`
-	Options Options `json:"options"`
+	Name    string  `json:"name" yaml:"name"`
+	Options Options `json:"options" yaml:"options"`
 }
 
 type LoggerItem struct {
-	Name   string                  `json:"name"`
-	Config map[string]LoggerConfig `json:"config"`
+	Name   string                  `json:"name" yaml:"name"`
+	Config map[string]LoggerConfig `json:"config" yaml:"config"`
 }
 
 type LoggerConfig struct {
-	Out       WriterConfig    `json:"out"`
-	Level     string          `json:"level"`
-	Hooks     []HookConfig    `json:"hooks"`
-	Formatter FormatterConfig `json:"formatter"`
+	Out       WriterConfig    `json:"out" yaml:"out"`
+	Level     string          `json:"level" yaml:"level"`
+	Hooks     []HookConfig    `json:"hooks" yaml:"hooks"`
+	Formatter FormatterConfig `json:"formatter" yaml:"formatter"`
 }
 
 type LogrusMateConfig struct {
-	EnvironmentKeys Environments `json:"env_keys"`
-	Loggers         []LoggerItem `json:"loggers"`
+	EnvironmentKeys Environments `json:"env_keys" yaml:"env_keys"`
+	Loggers         []LoggerItem `json:"loggers" yaml:"loggers"`
+	configType      string
 }
 
 func (p *LogrusMateConfig) Serialize() (data []byte, err error) {
-	return json.Marshal(p)
+	if p.configType == "json" {
+		data, err = json.Marshal(p)
+	} else if p.configType == "yaml" {
+		data, err = yaml.Marshal(p)
+	}
+	return
 }
 
 func LoadLogrusMateConfig(filename string) (conf LogrusMateConfig, err error) {
@@ -56,11 +64,18 @@ func LoadLogrusMateConfig(filename string) (conf LogrusMateConfig, err error) {
 	if data, err = ioutil.ReadFile(filename); err != nil {
 		return
 	}
+	if strings.HasSuffix(filename, ".json") || strings.HasSuffix(filename, ".conf") {
+		conf.configType = "json"
+		envJSON := env_json.NewEnvJson(env_json.ENV_JSON_KEY, env_json.ENV_JSON_EXT)
 
-	envJSON := env_json.NewEnvJson(env_json.ENV_JSON_KEY, env_json.ENV_JSON_EXT)
-
-	if err = envJSON.Unmarshal(data, &conf); err != nil {
-		return
+		if err = envJSON.Unmarshal(data, &conf); err != nil {
+			return
+		}
+	} else if strings.HasSuffix(filename, ".yml") || strings.HasSuffix(filename, ".yaml") {
+		conf.configType = "yaml"
+		if err = yaml.Unmarshal(data, &conf); err != nil {
+			return
+		}
 	}
 
 	return

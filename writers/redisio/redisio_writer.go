@@ -7,7 +7,7 @@ import (
 	"github.com/adjust/redis"
 	"github.com/adjust/redisio"
 
-	"github.com/gogap/logrus_mate"
+	"github.com/gooops/logrus_mate"
 )
 
 type RedisIOConfig struct {
