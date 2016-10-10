@@ -112,7 +112,6 @@ func (w *FileLogWriter) startLogger() error {
 func (w *FileLogWriter) docheck(size int) {
 	w.startLock.Lock()
 	defer w.startLock.Unlock()
-	fmt.Println(w)
 	if w.Rotate && ((w.Maxlines > 0 && w.maxlines_curlines >= w.Maxlines) ||
 		(w.Maxsize > 0 && w.maxsize_cursize >= w.Maxsize) ||
 		(w.Daily && time.Now().Day() != w.daily_opendate)) {
