@@ -21,13 +21,13 @@ const (
 )
 
 type FileLogConifg struct {
-	Filename string `json:"filename"`
-	Maxlines int    `json:"maxlines"`
-	Maxsize  int    `json:"maxsize"`
-	Daily    bool   `json:"daily"`
-	Maxdays  int64  `json:"maxdays"`
-	Rotate   bool   `json:"rotate"`
-	Level    int    `json:"level"`
+	Filename string `json:"filename" yaml:"filename"`
+	Maxlines int    `json:"maxlines" yaml:"maxlines"`
+	Maxsize  int    `json:"maxsize" yaml:"maxsize"`
+	Daily    bool   `json:"daily" yaml:"daily"`
+	Maxdays  int64  `json:"maxdays" yaml:"maxdays"`
+	Rotate   bool   `json:"rotate" yaml:"rotate"`
+	Level    int    `json:"level" yaml:"level"`
 }
 
 // FileLogWriter implements LoggerInterface.
@@ -112,6 +112,7 @@ func (w *FileLogWriter) startLogger() error {
 func (w *FileLogWriter) docheck(size int) {
 	w.startLock.Lock()
 	defer w.startLock.Unlock()
+	fmt.Println(w)
 	if w.Rotate && ((w.Maxlines > 0 && w.maxlines_curlines >= w.Maxlines) ||
 		(w.Maxsize > 0 && w.maxsize_cursize >= w.Maxsize) ||
 		(w.Daily && time.Now().Day() != w.daily_opendate)) {
